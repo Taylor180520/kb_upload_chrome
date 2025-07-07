@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Enterprise Knowledge Base Document Upload",
+  "version": "1.0",
+  "description": "Enterprise Knowledge Base Document Batch Upload Management Tool",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Enterprise Knowledge Base Document Upload"
+  },
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "http://localhost/*",
+    "https://*.company.com/*"
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+} 

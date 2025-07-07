@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chrome Extension Preview - User Avatar</title>
+  <link rel="stylesheet" href="styles/popup.css">
+  <style>
+    /* Preview specific styles */
+    body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      background: #f5f7fa;
+    }
+    
+    .preview-container {
+      max-width: 480px;
+      height: 640px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .preview-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 16px 20px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-container">
+    <div class="preview-header">
+      Chrome Extension - Batch List with User Avatar
+    </div>
+    
+    <div id="root">
+      <div class="main-content">
+        <button class="btn btn-primary btn-full" id="createNewBatchBtn">
+          + Create New Upload Batch
+        </button>
+        
+        <div class="batch-list">
+          <div class="batch-card">
+            <div class="batch-header">
+              <div class="batch-title">Batch 1</div>
+              <div class="batch-status status-draft">Draft</div>
+            </div>
+            <div class="batch-info">
+              <div class="batch-meta">
+                <span class="meta-tag">3 files</span>
+                <span class="meta-tag">IT</span>
+                <span class="meta-tag">Customer A</span>
+              </div>
+              <div class="batch-description">Document batch for customer processing and review...</div>
+            </div>
+            <div class="batch-actions">
+              <button class="btn btn-secondary btn-sm edit-batch-btn">Edit</button>
+              <button class="btn btn-danger btn-sm delete-batch-btn">Delete</button>
+            </div>
+          </div>
+          
+          <div class="batch-card">
+            <div class="batch-header">
+              <div class="batch-title">Batch 2</div>
+              <div class="batch-status status-submitted">Submitted</div>
+            </div>
+            <div class="batch-info">
+              <div class="batch-meta">
+                <span class="meta-tag">5 files</span>
+                <span class="meta-tag">Finance</span>
+                <span class="meta-tag">Customer B</span>
+              </div>
+              <div class="batch-description">Financial documents for quarterly review...</div>
+            </div>
+            <div class="batch-actions">
+              <button class="btn btn-secondary btn-sm edit-batch-btn">Edit</button>
+              <button class="btn btn-danger btn-sm delete-batch-btn">Delete</button>
+            </div>
+          </div>
+        </div>
+        
+        <button class="btn btn-success btn-full" id="submitAllBatchesBtn">
+          Submit All Batches
+        </button>
+        
+        <!-- User Avatar Component -->
+        <div class="user-avatar-container">
+          <div class="user-avatar" id="userAvatar">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM2NjdlZWEiLz4KPGNpcmNsZSBjeD0iMjAiIGN5PSIxNiIgcj0iNiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTEwIDMyQzEwIDI2LjQ3NzIgMTQuNDc3MiAyMiAyMCAyMkMyNS41MjI4IDIyIDMwIDI2LjQ3NzIgMzAgMzJIMTBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="User Avatar" class="avatar-image">
+            <div class="user-status-dot"></div>
+          </div>
+          <div class="user-dropdown" id="userDropdown">
+            <div class="user-info">
+              <div class="user-name">Taylor Zhang</div>
+              <div class="user-email">1907694139648851969@company.com</div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" id="logoutBtn">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 14H3C2.73478 14 2.48043 13.8946 2.29289 13.7071C2.10536 13.5196 2 13.2652 2 13V3C2 2.73478 2.10536 2.48043 2.29289 2.29289C2.48043 2.10536 2.73478 2 3 2H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M11 11L14 8L11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 8H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Sign Out
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple JavaScript for preview functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const userAvatar = document.getElementById('userAvatar');
+      const userDropdown = document.getElementById('userDropdown');
+      const logoutBtn = document.getElementById('logoutBtn');
+
+      if (userAvatar && userDropdown) {
+        // Toggle dropdown on avatar click
+        userAvatar.addEventListener('click', (e) => {
+          e.stopPropagation();
+          userDropdown.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+          if (!userAvatar.contains(e.target) && !userDropdown.contains(e.target)) {
+            userDropdown.classList.remove('show');
+          }
+        });
+      }
+
+      if (logoutBtn) {
+        // Handle logout click (placeholder - no actual action as requested)
+        logoutBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          alert('Logout clicked - no action implemented as requested');
+        });
+      }
+    });
+  </script>
+</body>
+</html> 
